@@ -1,5 +1,6 @@
 ﻿using MultiClientClient.Model;
 using MultiClientClient.Viewmodel;
+using MultiClientWindow.View;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,9 +24,9 @@ namespace MultiClientWindow.Viewmodel
             const int port = 8000;
             p = d;
             
-            TcpClient c = new TcpClient("127.0.0.1", port);
-            try
+                try
             {
+                TcpClient c = new TcpClient("127.0.0.1", port);
                 if (c.Connected)
                 {
                     form1.listView2.Items.Add("Connected");
@@ -37,6 +38,15 @@ namespace MultiClientWindow.Viewmodel
             {
                 Console.WriteLine("Can not connect to the server");
 
+            }catch(SocketException e)
+            {
+                WindowPopup popup = new WindowPopup();
+
+                popup.ShowDialog();
+
+               
+
+               
             }
 
            
