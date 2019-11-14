@@ -14,22 +14,27 @@ using System.Windows.Threading;
 
 namespace MultiClientWindow.Viewmodel
 {
-    class Login
+    public class Login
     {
        public NetworkStream stream;
         public Dispatcher p;
+        public static Form1 form;
+        public static TcpClient c;
+        public static string nick;
         public void Connect(String Nickname, Form1 form1,Dispatcher d)
             
         {
+            nick = Nickname;
+            form = form1;
             const int port = 8000;
             p = d;
             
                 try
             {
-                TcpClient c = new TcpClient("127.0.0.1", port);
+                 c = new TcpClient("127.0.0.1", port);
                 if (c.Connected)
                 {
-                    form1.listView2.Items.Add("Connected");
+                   
                     stream = c.GetStream();
                     LoginMe(Nickname, stream, form1);
                 }
@@ -41,16 +46,9 @@ namespace MultiClientWindow.Viewmodel
             }catch(SocketException e)
             {
                 WindowPopup popup = new WindowPopup();
-
                 popup.ShowDialog();
-
-               
-
-               
+                form1.button1.Enabled = true;
             }
-
-           
-      
         }
          void LoginMe(String Nickname,Object stream, Form1 form1)
         {
@@ -65,6 +63,7 @@ namespace MultiClientWindow.Viewmodel
             b_info = System.Text.Encoding.ASCII.GetBytes(U_info);
             st.Write(b_info, 0, b_info.Length);
             var disp = Dispatcher.CurrentDispatcher;
+            form.textBox1.Text = "You are chatting at: Main";
            Task.Factory.StartNew(() => {
                var rec = new Receiving();
                rec.Reading(st,form1,p);

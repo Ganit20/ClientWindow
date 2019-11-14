@@ -16,5 +16,7 @@ namespace MultiClientWindow.View
         {
             InitializeComponent();
         }
+
+
     }
 }

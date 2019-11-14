@@ -36,16 +36,17 @@ namespace MultiClientWindow
        Font stdfont = new Font("Consolas", 9.0f, FontStyle.Regular);
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("CONSOLE:");
             this.Nickname = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.listView1 = new System.Windows.Forms.ListView();
             this.textBox3 = new System.Windows.Forms.TextBox();
-            this.listView2 = new System.Windows.Forms.ListView();
             this.button2 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Nickname
@@ -76,42 +77,18 @@ namespace MultiClientWindow
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
-            // listView1
-            // 
-            this.listView1.AccessibleDescription = "Users";
-            this.listView1.AccessibleName = "User List";
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(789, 12);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(138, 321);
-            this.listView1.TabIndex = 3;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(12, 411);
+            this.textBox3.Location = new System.Drawing.Point(12, 431);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(640, 22);
             this.textBox3.TabIndex = 5;
             // 
-            // listView2
-            // 
-            this.listView2.AccessibleDescription = "Console";
-            this.listView2.AccessibleName = "Events";
-            this.listView2.HideSelection = false;
-            this.listView2.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
-            this.listView2.Location = new System.Drawing.Point(933, 276);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(138, 143);
-            this.listView2.TabIndex = 6;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(658, 397);
+            this.button2.Location = new System.Drawing.Point(658, 415);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(109, 36);
+            this.button2.Size = new System.Drawing.Size(109, 38);
             this.button2.TabIndex = 7;
             this.button2.Text = "Send";
             this.button2.UseVisualStyleBackColor = true;
@@ -129,24 +106,65 @@ namespace MultiClientWindow
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(933, 12);
+            this.textBox2.Location = new System.Drawing.Point(773, 33);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(138, 258);
+            this.textBox2.Size = new System.Drawing.Size(138, 404);
             this.textBox2.TabIndex = 9;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 16;
+            this.listBox1.Location = new System.Drawing.Point(917, 33);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(120, 340);
+            this.listBox1.TabIndex = 10;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.ListBox1_SelectedIndexChanged);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(917, 379);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(120, 58);
+            this.button3.TabIndex = 11;
+            this.button3.Text = "Create Room";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.Button3_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(914, 13);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(56, 17);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Rooms:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(770, 10);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(85, 17);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "In this room:";
             // 
             // Form1
             // 
+            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1083, 480);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.listView2);
             this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.listView1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Nickname);
@@ -161,14 +179,16 @@ namespace MultiClientWindow
 
         #endregion
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox3;
         public System.Windows.Forms.TextBox Nickname;
         private System.Windows.Forms.Button button2;
         public TextBox textBox1;
-        public ListView listView2;
-        public ListView listView1;
         public TextBox textBox2;
+        private Button button3;
+        public ListBox listBox1;
+        private Label label2;
+        private Label label3;
+        public Button button1;
     }
 }
 

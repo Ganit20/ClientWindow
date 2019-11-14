@@ -10,6 +10,7 @@ using MultiClientWindow.Viewmodel;
 using System.Windows.Forms;
 using MultiClientClient.Viewmodel;
 using System.Windows.Threading;
+using MultiClientWindow.View;
 
 namespace MultiClientWindow
 {
@@ -20,10 +21,11 @@ namespace MultiClientWindow
             InitializeComponent();
             
         }
-        Login l;
+        public static Login l;
         private void Button1_Click(object sender, EventArgs e)
         {
-            listView2.Items.Add("Connecting to server...");
+            this.AcceptButton = button2;
+            Nickname.Enabled = false;
             l = new Login();
             l.Connect(Nickname.Text,this, Dispatcher.CurrentDispatcher);
             button1.Enabled = false;
@@ -35,5 +37,37 @@ namespace MultiClientWindow
             textBox3.Text = String.Empty;
         }
 
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            RoomCreator room = new RoomCreator(l);
+            room.ShowDialog();
+            
+
+        }
+
+        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                bool ispassword;
+                if (Receiving.json[listBox1.SelectedItem.ToString()])
+                {
+                    RoomPassword password = new RoomPassword(listBox1.SelectedItem.ToString());
+                    password.ShowDialog();
+                
+                }
+                else
+                {
+                    var a = listBox1.SelectedItem.ToString();
+                    if (a != "" || a != "Chat Rooms: ")
+                    {
+                        new Sending(l).ChangeRoom(Nickname.Text, a,"");
+
+                    }
+                }
+            }
+            catch(NullReferenceException)
+            {}
+        }
     }
 }
