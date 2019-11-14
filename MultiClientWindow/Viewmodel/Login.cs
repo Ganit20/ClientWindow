@@ -4,6 +4,7 @@ using MultiClientWindow.View;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -24,14 +25,17 @@ namespace MultiClientWindow.Viewmodel
         public void Connect(String Nickname, Form1 form1,Dispatcher d)
             
         {
+
             nick = Nickname;
             form = form1;
             const int port = 8000;
+            string ip = "127.0.0.1";
+           
             p = d;
             
                 try
             {
-                 c = new TcpClient("127.0.0.1", port);
+                 c = new TcpClient(ip, port);
                 if (c.Connected)
                 {
                    
