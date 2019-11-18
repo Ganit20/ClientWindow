@@ -47,13 +47,18 @@ namespace MultiClientWindow
             this.button3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // Nickname
             // 
             this.Nickname.AccessibleDescription = "Nickname";
             this.Nickname.AccessibleName = "Nickname";
-            this.Nickname.Location = new System.Drawing.Point(79, 4);
+            this.Nickname.Location = new System.Drawing.Point(269, 4);
             this.Nickname.Name = "Nickname";
             this.Nickname.Size = new System.Drawing.Size(140, 22);
             this.Nickname.TabIndex = 0;
@@ -61,7 +66,7 @@ namespace MultiClientWindow
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(-1, 9);
+            this.label1.Location = new System.Drawing.Point(189, 6);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 17);
             this.label1.TabIndex = 1;
@@ -69,11 +74,11 @@ namespace MultiClientWindow
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(225, 4);
+            this.button1.Location = new System.Drawing.Point(596, 1);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(134, 23);
+            this.button1.Size = new System.Drawing.Size(87, 26);
             this.button1.TabIndex = 2;
-            this.button1.Text = "Set And Connect";
+            this.button1.Text = "Login";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
@@ -151,12 +156,60 @@ namespace MultiClientWindow
             this.label3.TabIndex = 13;
             this.label3.Text = "In this room:";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(415, 7);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 17);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "Password";
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(490, 3);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(100, 22);
+            this.textBox4.TabIndex = 15;
+            this.textBox4.UseSystemPasswordChar = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(689, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 26);
+            this.button4.TabIndex = 16;
+            this.button4.Text = "Register";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.Button4_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 6);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(24, 17);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "IP:";
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(42, 4);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(141, 22);
+            this.textBox5.TabIndex = 18;
+            // 
             // Form1
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1083, 480);
+            this.Controls.Add(this.textBox5);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button3);
@@ -189,6 +242,11 @@ namespace MultiClientWindow
         private Label label2;
         private Label label3;
         public Button button1;
+        private Label label4;
+        public TextBox textBox4;
+        private Label label5;
+        public TextBox textBox5;
+        public Button button4;
     }
 }
 

@@ -21,11 +21,15 @@ namespace MultiClientClient.Viewmodel
     public class Receiving
     {
         public static Dictionary<string, bool> json;
-        public void Reading(object obj, Form1 form, Dispatcher dispatcher)
+        public static Form1 f;
+        public static Dispatcher disp;
+        public void Reading(object obj, object form, Dispatcher dispatcher)
         {
-            System.Timers.Timer timer = new System.Timers.Timer(10000);
+            disp = dispatcher;
+            System.Timers.Timer timer = new System.Timers.Timer(3000);
             timer.Elapsed += CheckConnection;
             timer.AutoReset = true;
+            
             timer.Start();
             NetworkStream stream = (NetworkStream)obj;
             while (true)
@@ -48,76 +52,29 @@ namespace MultiClientClient.Viewmodel
                             Int32 msg = stream.Read(data, 0, bl);
                             string strmsg = System.Text.Encoding.ASCII.GetString(data);
                             string vstrmsg = strmsg.Substring(0, strmsg.IndexOf('?'));
-                            if (vstrmsg.Equals("USE"))
+                            if(vstrmsg.Equals("RDC"))
                             {
-                                strmsg = strmsg.Substring(strmsg.IndexOf('?') + 1, strmsg.IndexOf("?", strmsg.IndexOf('?') + 1) - 4);
-                                Task.Factory.StartNew(() =>
-                                {
-                                    string[] room = strmsg.Split('~');
-                                    dispatcher.Invoke(() =>
-                                    {
-                                        int number = 1;
-                                        form.textBox2.Clear();
-                                        foreach (var item in room)
-                                        {
-                                            if (item != "")
-                                                form.textBox2.Text += number + ". " + item + "\r\n";
-                                            number++;
-                                        }
-                                    });
-                                });
-                            }
-                            else if (vstrmsg.Equals("RCC"))
+                                Register r = (Register)form;
+                                Register(strmsg, dispatcher, r);
+                            }else f = (Form1)form;
+                            switch (vstrmsg)
                             {
-                                Task.Factory.StartNew(() =>
-                                {
-                                    strmsg = strmsg.Substring(strmsg.IndexOf('?') + 1, strmsg.IndexOf("?", strmsg.IndexOf('?') + 1) - 4);
-                                    json = JsonConvert.DeserializeObject<Dictionary<string, bool>>(strmsg);
+                                case "LOG":
+                                    new Messages().login(strmsg, dispatcher, f);
+                                    break;
+                                case "USE":
+                                    new Messages().UserList(strmsg, dispatcher, f);
+                                    break;
+                                case "RCC":
+                                    new Messages().RoomList(strmsg, dispatcher, f);
+                                    break;
+                                case "MSG":
+                                    new Messages().Message(strmsg, dispatcher, f);
+                                    break;
+                                case "SSG":
+                                    new Messages().ChangeRoom(strmsg, dispatcher, f);
+                                    break;
 
-                                    dispatcher.Invoke(() =>
-                                    {
-                                        form.listBox1.Items.Clear();
-                                        foreach (KeyValuePair<string, bool> e in json)
-                                        {
-                                            form.listBox1.Items.Add(e.Key);
-                                        }
-                                    });
-                                });
-                            }
-                            else if (vstrmsg.Equals("MSG"))
-                            {
-                                Task.Factory.StartNew(() =>
-                                {
-                                    try
-                                    {
-                                        strmsg = strmsg.Substring(strmsg.IndexOf('?', 0, 4) + 1, strmsg.IndexOf("?END") - 4);
-                                        var rec = JsonConvert.DeserializeObject<Msg_Info>(strmsg);
-                                        dispatcher.Invoke(() =>
-                                        {
-                                            form.textBox1.Text += ($"\r\n{rec.MsgTime} {rec.From}  {rec.Message} ");
-                                        });
-                                    }
-                                    catch (FormatException e) { }
-                                    catch (JsonReaderException) { }
-                                    catch (JsonSerializationException) { }
-                                });
-                            }
-                            else if (vstrmsg.Equals("SSG"))
-                            {
-                                Task.Factory.StartNew(() =>
-                                {
-                                    try
-                                    {
-                                        strmsg = strmsg.Substring(strmsg.IndexOf('?', 0, 4) + 1, strmsg.IndexOf("?END") - 4);
-                                        dispatcher.Invoke(() =>
-                                        {
-                                            form.textBox1.Text += ($"\r\n {strmsg}");
-                                        });
-                                    }
-                                    catch (FormatException e) { }
-                                    catch (JsonReaderException) { }
-                                    catch (JsonSerializationException) { }
-                                });
                             }
                         }
                         catch (System.ArgumentOutOfRangeException) { }
@@ -129,13 +86,38 @@ namespace MultiClientClient.Viewmodel
                 }
             }
         }
+        void Register(string strmsg, Dispatcher dispatcher, Register r)
+        {
+            strmsg = strmsg.Substring(strmsg.IndexOf('?') + 1, strmsg.IndexOf("?", strmsg.IndexOf('?') + 1) - 4);
+            if (strmsg.Equals("Confirmed"))
+            {
+                dispatcher.Invoke(() =>
+                {
+                    r.label4.Text = "You are registered";
+                    
+                });
+            }
+            else if (strmsg.Equals("Nope"))
+            {
+                dispatcher.Invoke(() =>
+                {
+                    r.label4.Text = "Nickname or E-mail is in use try again or log in";
+                });
+            }
+        }
         void CheckConnection(Object src, ElapsedEventArgs e)    
         {
             if(!Login.c.Connected)
             {
-                WindowPopup popup = new WindowPopup();
-                popup.ShowDialog();
-                Application.Exit();
+                disp.Invoke(() =>
+                {
+                    f.Nickname.Enabled = true;
+                    f.button1.Enabled = true;
+                    f.button4.Enabled = true;
+                    f.textBox4.Enabled = true;
+                    f.textBox5.Enabled = true;
+                    f.textBox1.Text += "\r\n Can't connect to server";
+                });
             }
         }
    }       

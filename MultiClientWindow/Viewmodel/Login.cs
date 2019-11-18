@@ -1,5 +1,6 @@
 ﻿using MultiClientClient.Model;
 using MultiClientClient.Viewmodel;
+using MultiClientWindow.Model;
 using MultiClientWindow.View;
 using Newtonsoft.Json;
 using System;
@@ -17,65 +18,88 @@ namespace MultiClientWindow.Viewmodel
 {
     public class Login
     {
-       public NetworkStream stream;
+        public NetworkStream stream;
         public Dispatcher p;
         public static Form1 form;
         public static TcpClient c;
+        public static Register r;
         public static string nick;
-        public void Connect(String Nickname, Form1 form1,Dispatcher d)
-            
+        public void Connect(string IP, string Nickname, string Password, Form1 form1, Dispatcher d)
+
         {
 
             nick = Nickname;
             form = form1;
             const int port = 8000;
-            string ip = "127.0.0.1";
-           
+            string ip = IP;
+
             p = d;
-            
-                try
+
+            try
             {
-                 c = new TcpClient(ip, port);
+                c = new TcpClient(ip, port);
                 if (c.Connected)
                 {
-                   
+
                     stream = c.GetStream();
-                    LoginMe(Nickname, stream, form1);
+                    LoginMe(Nickname, Password);
+                    
+                    form1.Nickname.Enabled = false;
+                    form1.button1.Enabled = false;
+                    form1.button4.Enabled = false;
+                    form1.textBox4.Enabled = false;
+                    form1.textBox5.Enabled = false;
                 }
             }
             catch (TypeInitializationException r)
             {
-                Console.WriteLine("Can not connect to the server");
+                form.textBox1.Text += "Can not connect to the server";
 
-            }catch(SocketException e)
+            }
+            catch (SocketException e)
             {
-                WindowPopup popup = new WindowPopup();
-                popup.ShowDialog();
-                form1.button1.Enabled = true;
+                form.textBox1.Text += "Can not connect to the server";
             }
         }
-         void LoginMe(String Nickname,Object stream, Form1 form1)
+        public void registerMe(string Nick, string Password, string email,Register reg,Dispatcher disp,string IP)
         {
-            NetworkStream st = (NetworkStream)stream;
-            String From = Nickname;
-            String IP = AddressFamily.InterNetwork.ToString();
-            var info = new Msg_Info() { From = From, IP = IP, MsgTime = DateTime.UtcNow.ToString() };
-            String U_info = JsonConvert.SerializeObject(info);
-            U_info = "user" + U_info;
-
-            Byte[] b_info = new Byte[100];
-            b_info = System.Text.Encoding.ASCII.GetBytes(U_info);
-            st.Write(b_info, 0, b_info.Length);
-            var disp = Dispatcher.CurrentDispatcher;
-            form.textBox1.Text = "You are chatting at: Main";
-           Task.Factory.StartNew(() => {
-               var rec = new Receiving();
-               rec.Reading(st,form1,p);
-               });
-            
-
-
+            r = reg;
+            const int port = 8000;
+            string ip = IP; 
+            c = new TcpClient(ip, port);
+            if (c.Connected)
+            {
+                var st = c.GetStream();
+                var msg = JsonConvert.SerializeObject(new user() { Name = Nick, email = email, password = Password });
+                msg = "REG?" + msg + "?END";
+                byte[] g = System.Text.Encoding.ASCII.GetBytes(msg);
+                st.Write(g, 0, g.Length);
+                var rec = new Receiving();
+                rec.Reading(st, reg, disp);
+            }
         }
-    }
-}
+         void LoginMe(string Nickname, string Password)
+            {
+
+                NetworkStream st = stream;
+                string From = Nickname;
+                string IP = AddressFamily.InterNetwork.ToString();
+                var info = new user() { Name = From, IP = IP, password = Password };
+                string U_info = JsonConvert.SerializeObject(info);
+                U_info = "LOG?" + U_info;
+                var form1 = form;
+                Byte[] b_info = new Byte[100];
+                b_info = System.Text.Encoding.ASCII.GetBytes(U_info);
+                st.Write(b_info, 0, b_info.Length);
+                var disp = Dispatcher.CurrentDispatcher;
+                Task.Factory.StartNew(() => {
+                    var rec = new Receiving();
+                    rec.Reading(st, form1, p);
+                });
+
+
+
+            }
+        }
+    } 
 

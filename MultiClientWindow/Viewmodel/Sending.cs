@@ -1,5 +1,6 @@
 ﻿using MultiClientClient.Model;
 using MultiClientWindow;
+using MultiClientWindow.Model;
 using MultiClientWindow.View;
 using MultiClientWindow.Viewmodel;
 using MultiServe.Net.Model;
@@ -58,6 +59,7 @@ namespace MultiClientClient.Viewmodel
             byte[] bmsg = System.Text.Encoding.ASCII.GetBytes("URC?" + msg);
             st.Write(bmsg, 0, bmsg.Length);
         }
+
 
     }
 }

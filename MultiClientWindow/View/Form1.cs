@@ -15,7 +15,7 @@ using MultiClientWindow.View;
 namespace MultiClientWindow
 {
     public partial class Form1 : Form
-    {
+    {   
         public Form1()
         {
             InitializeComponent();
@@ -25,10 +25,10 @@ namespace MultiClientWindow
         private void Button1_Click(object sender, EventArgs e)
         {
             this.AcceptButton = button2;
-            Nickname.Enabled = false;
+            
             l = new Login();
-            l.Connect(Nickname.Text,this, Dispatcher.CurrentDispatcher);
-            button1.Enabled = false;
+            l.Connect(textBox5.Text,Nickname.Text,textBox4.Text,this, Dispatcher.CurrentDispatcher);
+            
         }
         private void Button2_Click(object sender, EventArgs e)
         {
@@ -68,6 +68,13 @@ namespace MultiClientWindow
             }
             catch(NullReferenceException)
             {}
+        }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            Register register = new Register(Dispatcher.CurrentDispatcher);
+            new Register(Dispatcher.CurrentDispatcher).ShowDialog();
+            
         }
     }
 }
